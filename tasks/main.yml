@@ -1,2 +1,19 @@
 ---
 # tasks file for ansible-arch-keyserver
+
+- name: Create user's .gnupg directory
+  file:
+    path: /home/{{ user_name }}/.gnupg
+    state: directory
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: 0700
+
+- name: Create gpg.conf
+  lineinfile:
+    path: /home/{{ ansible_env.USER }}/.gnupg/gpg.conf
+    line: 'keyserver hkps://keyserver.ubuntu.com'
+    create: yes
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: 0600
